@@ -34,7 +34,67 @@ client = MultiServerMCPClient(
 )
 
 
-async def get_All_tools():
-    tools = client.get_tools()
+async def get_all_tools():
+    tools = await client.get_tools()
+    print("\nAvailable MCP Tools:\n")
+
+    for tool in tools:
+        print(tool.name)   
+
+
+search_tool = None 
+aviation_tools = None
+
+async def initialize_mcp():
+    global search_tool 
+    global aviation_tools
+
+    if search_tool is not None and aviation_tools :
+        return 
+
+    tools = await client.get_tools()
+
+    print("\nAvailaible MCP Tools\n")
     for tool in tools:
         print(tool.name)
+
+    search_tool = next(
+        tool
+        for tool in tools
+        if tool.name == "tavily_search"
+    )
+
+    aviation_tools = next(
+            tool
+            for tool in tools
+            if tool.name != "tavily_search"
+        )
+
+
+async def tavily_mcp_search(query : str):
+    await initialize_mcp()
+    result = await search_tool.ainvoke({
+        "query":query
+    })
+
+    return result
+    # print(result)
+
+
+async def aviation_mcp_call():
+    tool_name : str 
+    tool_args : dict = None 
+
+    tool = await client.get_tools()
+
+    tool = next(
+        t for  t in tool
+        if t.name == tool_name
+    )
+
+    result = await tool.ainvoke(
+        tool_args or {}
+    )
+
+    return result
+
