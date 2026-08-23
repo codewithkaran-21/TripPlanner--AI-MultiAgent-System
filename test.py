@@ -1,11 +1,9 @@
-from tools.tavily_tool import tavily_search
-from baclend import run_travel_agent
+import asyncio
+# from mcp_client_test import tavily_mcp_search , get_all_tools
+from mcp_client import get_All_tools
 
-user_input = input("Enter your query :")
 
-response = run_travel_agent(
-    user_input=user_input,
-    thread_id="test"
-)
+if __name__ =="__main__":
+    # query = "latest news about AI"
+    asyncio.run(get_All_tools())
 
-print(response["answer"])

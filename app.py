@@ -36,7 +36,7 @@ class TravelRequest(BaseModel):
 
 @app.get("/",response_class=HTMLResponse)
 async def home(request : Request):
-    return templates.TemplateResponseI(
+    return templates.TemplateResponse(
         request=request,
         name="index.html",
         context = {}
